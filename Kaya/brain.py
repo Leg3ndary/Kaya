@@ -3,12 +3,11 @@ Kaya's brain, this is where almost all of the stuff is done
 """
 
 import datetime
-import httpx
+import json
+from typing import Optional
 
 import audio
-import json
-
-from typing import Optional
+import httpx
 
 
 class KayaBrain:
@@ -82,4 +81,4 @@ class KayaBrain:
 
             response = httpx.post(API_URL, headers=headers, json=payload)
             print(response.json())
-
+            self.voice.say(response.json().get("generated_text"))
