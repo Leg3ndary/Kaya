@@ -4,11 +4,12 @@ Kaya's brain, this is where almost all of the stuff is done
 
 import datetime
 import json
+import random
 from typing import Optional
 
 import audio
 import httpx
-import random
+import gui
 
 
 class KayaBrain:
@@ -23,8 +24,9 @@ class KayaBrain:
         self.voice = voice
         with open("config.json", "r", encoding="utf8") as file:
             self.config = json.loads(file.read())
+        self.gui: gui.KayaWindow = gui.KayaWindow()
 
-    def get_time(self) -> None:
+    async def get_time(self) -> None:
         """
         Get the time
         """
@@ -36,29 +38,37 @@ class KayaBrain:
             minute = "o" + minute[1]
         meridiem = datetime.datetime.now().strftime("%p").lower()
         time_str = f"{hour} {minute} {meridiem}"
-        self.voice.say(f"It is {time_str}")
+        await self.voice.say(f"It is {time_str}")
 
-    def get_date(self) -> None:
+    async def get_date(self) -> None:
         """
         Get the date
         """
         date_str = datetime.datetime.now().strftime("%A, %B, %dth, %Y")
-        self.voice.say(f"It is {date_str}")
-    
-    def welcome(self) -> None:
+        await self.voice.say(f"It is {date_str}")
+
+    async def welcome(self) -> None:
         """
         Welcome us back
         """
         now = datetime.datetime.now()
-        time_of_day = "morning" if now.hour < 12 else "afternoon" if now.hour < 17 else "evening"
-        greetings = (f"good {time_of_day} sir", "welcome back sir", "how can i help you sir", "what can i do for you sir", "how can i be of service sir")
-        self.voice.say(random.choice(greetings))
+        time_of_day = (
+            "morning" if now.hour < 12 else "afternoon" if now.hour < 17 else "evening"
+        )
+        greetings = (
+            f"good {time_of_day} sir",
+            "welcome back sir",
+            "how can i help you sir",
+            "what can i do for you sir",
+            "how can i be of service sir",
+        )
+        await self.voice.say(random.choice(greetings))
 
-    def process_command(self) -> Optional[str]:
+    async def process_command(self) -> Optional[str]:
         """
         process a command
         """
-        query = self.voice.take_command().lower()
+        query = (await self.voice.take_command()).lower()
         print(query)
 
         if query == "---":
@@ -68,7 +78,7 @@ class KayaBrain:
             match in query.replace(" current ", " ")
             for match in ("what's the time", "what time is it", "what is the time")
         ):
-            self.get_time()
+            await self.get_time()
 
         elif any(
             match in query
@@ -79,7 +89,7 @@ class KayaBrain:
                 "what date is it",
             )
         ):
-            self.get_date()
+            await self.get_date()
 
         else:
             API_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-j-6B"
@@ -91,4 +101,4 @@ class KayaBrain:
 
             response = httpx.post(API_URL, headers=headers, json=payload)
             print(response.json())
-            self.voice.say(response.json().get("generated_text"))
+            await self.voice.say(response.json()[0].get("generated_text"))

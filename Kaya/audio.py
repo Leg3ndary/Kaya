@@ -26,14 +26,15 @@ class KayaAudio:
         self.voicespeed = rate
         self.engine.setProperty("rate", self.voicespeed)
 
-    def say(self, audio: str) -> None:
+    async def say(self, audio: str) -> None:
         """
         Say something out loud
         """
         self.engine.say(audio)
         self.engine.runAndWait()
+        return
 
-    def take_command(self) -> str:
+    async def take_command(self) -> str:
         """
         Takes a command for processing
         """
