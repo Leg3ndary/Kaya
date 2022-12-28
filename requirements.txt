@@ -1,0 +1,4 @@
+cx_Freeze==6.13.1
+httpx==0.23.0
+pyttsx3==2.90
+SpeechRecognition==3.9.0
