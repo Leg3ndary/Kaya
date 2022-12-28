@@ -161,5 +161,7 @@ env__/
 app/db.sqlite3
 
 testing.py
+testing2.py
 
 config.json
+secrets/
