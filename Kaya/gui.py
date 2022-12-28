@@ -1,5 +1,4 @@
 import tkinter
-import asyncio
 from itertools import count, cycle
 import tkthread
 
@@ -68,7 +67,6 @@ class KayaWindow:
         """
         Init the window
         """
-        self.loop: bool = True
         self.win = tkinter.Tk()
 
         self.win.geometry("280x280")
@@ -87,7 +85,7 @@ class KayaWindow:
         exStyle = win32con.WS_EX_COMPOSITED | win32con.WS_EX_LAYERED | win32con.WS_EX_NOACTIVATE | win32con.WS_EX_TOPMOST | win32con.WS_EX_TRANSPARENT
         win32api.SetWindowLong(hWindow, win32con.GWL_EXSTYLE, exStyle)
 
-    def run(self) -> None:
+    def load(self) -> None:
         """
         Load the window
         """
@@ -95,6 +93,5 @@ class KayaWindow:
         self.label.pack()
         self.label.load("Kaya/icons/icon.gif")
 
-        while self.loop:
-            self.win.update()
+        self.win.mainloop()
     

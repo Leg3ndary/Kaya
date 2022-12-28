@@ -6,23 +6,51 @@ This is just the program that runs Kaya and is not a part of Kaya herself.
 
 import asyncio
 
+import threading
 from Kaya import audio, brain, gui
 
-async def main() -> None:
+class Kaya(threading.Thread):
     """
-    The main function
+    Kaya
     """
-    loop = asyncio.get_event_loop()
+
+    def __init__(self, tk_root) -> None:
+        """
+        Init Kaya
+        """
+        self.root = tk_root
+
+        self.loop = asyncio.get_event_loop()
+
+        threading.Thread.__init__(self)
+        self.start()
+
+    def run(self) -> None:
+        """
+        Run Kaya
+        """
+        self.loop.run_until_complete(start())
+
+async def start() -> None:
+    """
+    Start Kaya
+    """
     voice = audio.KayaAudio()
     kaya = brain.KayaBrain(voice)
 
     await kaya.welcome()
-    kaya.gui = gui.KayaWindow()
-
-    loop.run_in_executor(None, kaya.gui.run)
 
     while True:
         await kaya.process_command()
 
+def main() -> None:
+    """
+    The main function
+    """
+    win = gui.KayaWindow()
+    Kaya(win)
+    win.load()
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
