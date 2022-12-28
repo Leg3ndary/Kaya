@@ -7,9 +7,8 @@ import json
 import random
 from typing import Optional
 
-import audio
+from . import audio, gui
 import httpx
-import gui
 
 
 class KayaBrain:
@@ -24,7 +23,7 @@ class KayaBrain:
         self.voice = voice
         with open("config.json", "r", encoding="utf8") as file:
             self.config = json.loads(file.read())
-        self.gui: gui.KayaWindow = gui.KayaWindow()
+        self.gui: gui.KayaWindow
 
     async def get_time(self) -> None:
         """

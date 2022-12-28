@@ -1,10 +1,14 @@
 import tkinter
+import asyncio
 from itertools import count, cycle
+import tkthread
 
 import pywintypes
 import win32api
 import win32con
 from PIL import Image, ImageTk
+
+tkthread.patch()
 
 class ImageLabel(tkinter.Label):
     """
@@ -64,6 +68,7 @@ class KayaWindow:
         """
         Init the window
         """
+        self.loop: bool = True
         self.win = tkinter.Tk()
 
         self.win.geometry("280x280")
@@ -82,12 +87,14 @@ class KayaWindow:
         exStyle = win32con.WS_EX_COMPOSITED | win32con.WS_EX_LAYERED | win32con.WS_EX_NOACTIVATE | win32con.WS_EX_TOPMOST | win32con.WS_EX_TRANSPARENT
         win32api.SetWindowLong(hWindow, win32con.GWL_EXSTYLE, exStyle)
 
-    def load(self) -> None:
+    def run(self) -> None:
         """
         Load the window
         """
+        print("Loading window...")
         self.label.pack()
-        self.label.load('Kaya/icons/icon.gif')
+        self.label.load("Kaya/icons/icon.gif")
 
-        self.label.mainloop()
+        while self.loop:
+            self.win.update()
     
