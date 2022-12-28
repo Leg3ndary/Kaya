@@ -8,6 +8,7 @@ from typing import Optional
 
 import audio
 import httpx
+import random
 
 
 class KayaBrain:
@@ -43,6 +44,15 @@ class KayaBrain:
         """
         date_str = datetime.datetime.now().strftime("%A, %B, %dth, %Y")
         self.voice.say(f"It is {date_str}")
+    
+    def welcome(self) -> None:
+        """
+        Welcome us back
+        """
+        now = datetime.datetime.now()
+        time_of_day = "morning" if now.hour < 12 else "afternoon" if now.hour < 17 else "evening"
+        greetings = (f"good {time_of_day} sir", "welcome back sir", "how can i help you sir", "what can i do for you sir", "how can i be of service sir")
+        self.voice.say(random.choice(greetings))
 
     def process_command(self) -> Optional[str]:
         """

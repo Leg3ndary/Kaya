@@ -11,5 +11,6 @@ import brain
 if __name__ == "__main__":
     audio = audio.KayaAudio()
     kaya = brain.KayaBrain(audio)
+    kaya.welcome()
     while True:
         kaya.process_command()
