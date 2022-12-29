@@ -4,7 +4,7 @@ from cx_Freeze import Executable, setup
 
 sys.setrecursionlimit(1500)
 
-base = None  # "Win32GUI"
+base = None # "Win32GUI"
 
 executables = [Executable("main.py", base=base)]
 
@@ -17,6 +17,15 @@ packages = [
     "typing",
     "os",
     "sys",
+    "threading",
+    "asyncio",
+    "tkinter",
+    "PIL",
+    "itertools",
+    "pywintypes",
+    "win32api",
+    "win32con",
+    "random"
 ]
 options = {
     "build_exe": {
@@ -27,7 +36,7 @@ options = {
 setup(
     name="Kaya",
     options=options,
-    version="0.1.0",
-    description="Kaya PA",
+    version="0.1.1",
+    description="Kaya Personal Assistant.",
     executables=executables,
 )
