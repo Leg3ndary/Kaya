@@ -5,9 +5,10 @@ This is just the program that runs Kaya and is not a part of Kaya herself.
 """
 
 import asyncio
-
 import threading
+
 from Kaya import audio, brain, gui
+
 
 class Kaya(threading.Thread):
     """
@@ -31,6 +32,7 @@ class Kaya(threading.Thread):
         """
         self.loop.run_until_complete(start())
 
+
 async def start() -> None:
     """
     Start Kaya
@@ -42,6 +44,7 @@ async def start() -> None:
 
     while True:
         await kaya.process_command()
+
 
 def main() -> None:
     """

@@ -4,7 +4,7 @@ from cx_Freeze import Executable, setup
 
 sys.setrecursionlimit(1500)
 
-base = None # "Win32GUI"
+base = None  # "Win32GUI"
 
 executables = [Executable("main.py", base=base)]
 
@@ -25,7 +25,7 @@ packages = [
     "pywintypes",
     "win32api",
     "win32con",
-    "random"
+    "random",
 ]
 options = {
     "build_exe": {

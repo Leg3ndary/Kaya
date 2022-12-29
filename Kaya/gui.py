@@ -32,7 +32,7 @@ class ImageLabel(tkinter.Label):
         self.frames = cycle(frames)
 
         try:
-            self.delay = im.info['duration']
+            self.delay = im.info["duration"]
         except:
             self.delay = 100
 
@@ -55,6 +55,7 @@ class ImageLabel(tkinter.Label):
         if self.frames:
             self.config(image=next(self.frames))
             self.after(self.delay, self.next_frame)
+
 
 class KayaWindow:
     """
@@ -80,7 +81,13 @@ class KayaWindow:
         self.win.wm_attributes("-alpha", 0.2)
 
         hWindow = pywintypes.HANDLE(int(self.win.frame(), 16))
-        exStyle = win32con.WS_EX_COMPOSITED | win32con.WS_EX_LAYERED | win32con.WS_EX_NOACTIVATE | win32con.WS_EX_TOPMOST | win32con.WS_EX_TRANSPARENT
+        exStyle = (
+            win32con.WS_EX_COMPOSITED
+            | win32con.WS_EX_LAYERED
+            | win32con.WS_EX_NOACTIVATE
+            | win32con.WS_EX_TOPMOST
+            | win32con.WS_EX_TRANSPARENT
+        )
         win32api.SetWindowLong(hWindow, win32con.GWL_EXSTYLE, exStyle)
 
     def load(self) -> None:
@@ -92,4 +99,3 @@ class KayaWindow:
         self.label.load("Kaya/icons/icon.gif")
 
         self.win.mainloop()
-    
