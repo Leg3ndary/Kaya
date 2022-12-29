@@ -1,13 +1,11 @@
 import tkinter
 from itertools import count, cycle
-import tkthread
 
 import pywintypes
 import win32api
 import win32con
 from PIL import Image, ImageTk
 
-tkthread.patch()
 
 class ImageLabel(tkinter.Label):
     """
