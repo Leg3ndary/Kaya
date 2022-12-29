@@ -7,8 +7,9 @@ import json
 import random
 from typing import Optional
 
-from . import audio, gui
 import httpx
+
+from . import audio, gui
 
 
 class KayaBrain:
