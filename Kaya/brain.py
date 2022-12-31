@@ -5,11 +5,13 @@ Kaya's brain, this is where almost all of the stuff is done
 import datetime
 import json
 import random
-from typing import Optional
+from typing import Optional, List
 
 import httpx
 
 from . import audio, gui
+from .integrations import integration_base as ib
+from .integrations import time_re
 
 
 class KayaBrain:
@@ -25,6 +27,9 @@ class KayaBrain:
         with open("config.json", "r", encoding="utf8") as file:
             self.config = json.loads(file.read())
         self.gui: gui.KayaWindow
+        self.integrations: List[ib.Integration] = [
+            time_re.TimeRe()
+        ]
 
     async def get_time(self) -> None:
         """
@@ -65,6 +70,22 @@ class KayaBrain:
         await self.voice.say(random.choice(greetings))
 
     async def process_command(self) -> Optional[str]:
+        """
+        Process a command/integration
+        """
+        query = (await self.voice.take_command()).lower()
+        print(query)
+
+        answered = False
+
+        for integration in self.integrations:
+            if await integration.check(query):
+                if not integration.multi and answered:
+                    continue
+                answered = True
+                return await integration.response(self.voice)
+
+    async def old_process_command(self) -> Optional[str]:
         """
         process a command
         """
