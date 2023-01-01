@@ -13,7 +13,7 @@ class TimeRe(ib.Integration):
         Init the time integration
         """
         super().__init__()
-        self.multi = True
+        self.multi = False
 
     async def check(self, query: str) -> bool:
         """
@@ -37,3 +37,36 @@ class TimeRe(ib.Integration):
         meridiem = datetime.datetime.now().strftime("%p").lower()
         time_str = f"{hour} {minute} {meridiem}"
         await voice.say(f"it is {time_str}")
+
+class DateRe(ib.Integration):
+    """
+    Date integration
+    """
+
+    def __init__(self) -> None:
+        """
+        Init the date integration
+        """
+        super().__init__()
+        self.multi = False
+
+    async def check(self, query: str) -> bool:
+        """
+        Check if the query is a date query
+        """
+        return any(
+            match in query
+            for match in (
+                "what day is it",
+                "what's the date",
+                "what is the date",
+                "what date is it",
+            )
+        )
+
+    async def response(self, voice: audio.KayaAudio) -> str:
+        """
+        Get the date
+        """
+        date_str = datetime.datetime.now().strftime("%A, %B, %dth, %Y")
+        await voice.say(f"it is {date_str}")

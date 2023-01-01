@@ -28,29 +28,9 @@ class KayaBrain:
             self.config = json.loads(file.read())
         self.gui: gui.KayaWindow
         self.integrations: List[ib.Integration] = [
-            time_re.TimeRe()
+            time_re.TimeRe(),
+            time_re.DateRe()
         ]
-
-    async def get_time(self) -> None:
-        """
-        Get the time
-        """
-        now = datetime.datetime.now()
-
-        hour = str(now.hour if now.hour < 13 else now.hour - 12)
-        minute = str(now.strftime("%H"))
-        if minute[0] == "0":
-            minute = "o" + minute[1]
-        meridiem = datetime.datetime.now().strftime("%p").lower()
-        time_str = f"{hour} {minute} {meridiem}"
-        await self.voice.say(f"It is {time_str}")
-
-    async def get_date(self) -> None:
-        """
-        Get the date
-        """
-        date_str = datetime.datetime.now().strftime("%A, %B, %dth, %Y")
-        await self.voice.say(f"It is {date_str}")
 
     async def welcome(self) -> None:
         """
@@ -84,35 +64,8 @@ class KayaBrain:
                     continue
                 answered = True
                 return await integration.response(self.voice)
-
-    async def old_process_command(self) -> Optional[str]:
-        """
-        process a command
-        """
-        query = (await self.voice.take_command()).lower()
-        print(query)
-
-        if query == "---":
-            return
-
-        if any(
-            match in query.replace(" current ", " ")
-            for match in ("what's the time", "what time is it", "what is the time")
-        ):
-            await self.get_time()
-
-        elif any(
-            match in query
-            for match in (
-                "what day is it",
-                "what's the date",
-                "what is the date",
-                "what date is it",
-            )
-        ):
-            await self.get_date()
-
-        else:
+        
+        if not answered:
             API_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-j-6B"
             headers = {"Authorization": f"Bearer {self.config.get('huggingface')}"}
 
