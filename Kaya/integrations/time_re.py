@@ -25,7 +25,7 @@ class TimeRe(ib.Integration):
             for match in ("what's the time", "what time is it", "what is the time")
         )
 
-    async def response(self, voice: audio.KayaAudio) -> str:
+    async def response(self, query: str, voice: audio.KayaAudio) -> str:
         """
         Get the time
         """
@@ -66,7 +66,7 @@ class DateRe(ib.Integration):
             )
         )
 
-    async def response(self, voice: audio.KayaAudio) -> str:
+    async def response(self, query: str, voice: audio.KayaAudio) -> str:
         """
         Get the date
         """

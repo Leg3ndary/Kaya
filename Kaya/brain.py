@@ -11,7 +11,7 @@ import httpx
 
 from . import audio, gui
 from .integrations import integration_base as ib
-from .integrations import time_re
+from .integrations import time_re, google_calendar
 
 
 class KayaBrain:
@@ -27,7 +27,7 @@ class KayaBrain:
         with open("config.json", "r", encoding="utf8") as file:
             self.config = json.loads(file.read())
         self.gui: gui.KayaWindow
-        self.integrations: List[ib.Integration] = [time_re.TimeRe(), time_re.DateRe()]
+        self.integrations: List[ib.Integration] = [time_re.TimeRe(), time_re.DateRe(), google_calendar.GoogleCalendar()]
 
     async def welcome(self) -> None:
         """
@@ -60,7 +60,7 @@ class KayaBrain:
                 if not integration.multi and answered:
                     continue
                 answered = True
-                return await integration.response(self.voice)
+                return await integration.response(query, self.voice)
 
         if not answered:
             API_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-j-6B"

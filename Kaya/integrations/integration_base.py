@@ -22,7 +22,7 @@ class Integration:
         """
         return False
 
-    async def response(self, voice: audio.KayaAudio) -> None:
+    async def response(self, query: str, voice: audio.KayaAudio) -> None:
         """
         The code that should be ran if the check is correct
         """
