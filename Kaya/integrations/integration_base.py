@@ -4,6 +4,7 @@ Integration Base Class
 
 from .models import audio_model as audio
 
+
 class Integration:
     """
     Base class for integration

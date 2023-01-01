@@ -1,7 +1,8 @@
-from . import integration_base as ib
 import datetime
 
+from . import integration_base as ib
 from .models import audio_model as audio
+
 
 class TimeRe(ib.Integration):
     """
@@ -37,6 +38,7 @@ class TimeRe(ib.Integration):
         meridiem = datetime.datetime.now().strftime("%p").lower()
         time_str = f"{hour} {minute} {meridiem}"
         await voice.say(f"it is {time_str}")
+
 
 class DateRe(ib.Integration):
     """

@@ -9,18 +9,22 @@ from googleapiclient.errors import HttpError
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
+
 class GoogleCalendarIntegration:
     """
     Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
     """
+
     def __init__(self) -> None:
         """
         Init the integration
         """
         creds = None
         if os.path.exists("Kaya/secrets/token.json"):
-            creds = Credentials.from_authorized_user_file("Kaya/secrets/token.json", SCOPES)
+            creds = Credentials.from_authorized_user_file(
+                "Kaya/secrets/token.json", SCOPES
+            )
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())

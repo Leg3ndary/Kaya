@@ -4,6 +4,7 @@ Audio model for type checking
 
 import pyttsx3
 
+
 class KayaAudio:
     """
     Kaya's audio module
