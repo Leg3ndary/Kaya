@@ -5,7 +5,7 @@ Kaya's brain, this is where almost all of the stuff is done
 import datetime
 import json
 import random
-from typing import Optional, List
+from typing import List, Optional
 
 import httpx
 
@@ -27,10 +27,7 @@ class KayaBrain:
         with open("config.json", "r", encoding="utf8") as file:
             self.config = json.loads(file.read())
         self.gui: gui.KayaWindow
-        self.integrations: List[ib.Integration] = [
-            time_re.TimeRe(),
-            time_re.DateRe()
-        ]
+        self.integrations: List[ib.Integration] = [time_re.TimeRe(), time_re.DateRe()]
 
     async def welcome(self) -> None:
         """
@@ -64,7 +61,7 @@ class KayaBrain:
                     continue
                 answered = True
                 return await integration.response(self.voice)
-        
+
         if not answered:
             API_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-j-6B"
             headers = {"Authorization": f"Bearer {self.config.get('huggingface')}"}
